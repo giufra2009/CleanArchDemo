@@ -1,23 +1,32 @@
-﻿using CleanArch.Application.Interfaces;
+﻿using Autofac;
+using CleanArch.Application.Interfaces;
 using CleanArch.Application.Services;
 using CleanArch.Domain.Interfaces;
 using CleanArch.Infra.Data.Repository;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CleanArch.Infra.IoC
 {
-   public class DependencyContainer
+   public class DependencyContainer: Module
     {
-        public static void RegisterServices(IServiceCollection services)
+        protected override void Load(ContainerBuilder builder)
         {
-            //Application Layer
-            services.AddScoped<ICourseService, CourseService>();
-
-            //Infra.Data Layer
-            services.AddScoped<ICourseRepository, CourseRepository>();
-
-
-
+            builder.RegisterType<CourseService>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            builder.RegisterType<CourseRepository>().AsImplementedInterfaces().InstancePerLifetimeScope();
         }
+
+       
+        //public static void RegisterServices(IServiceCollection services)
+        //{
+        //    //Application Layer
+        //    services.AddScoped<ICourseService, CourseService>();
+
+        //    //Infra.Data Layer
+        //    services.AddScoped<ICourseRepository, CourseRepository>();
+
+
+
+        //}
     }
 }
